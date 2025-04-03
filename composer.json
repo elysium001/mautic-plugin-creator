@@ -1,15 +1,10 @@
 {
     "name": "elysium001/mautic-plugin-creator",
-    "description": "Basic Mautic custom plugin creator",
+    "description": "fork based on aviboy2006's Basic Mautic custom plugin creator",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",
-    "require": {},
     "authors": [
-	    {
-	    	"name": "aviboy2006",
-	    	"email": "avinashsdalvi@gmail.com"	
-	    },
         {
 	    	"name": "elysium001",
 	    	"email": "a.omarserrano@gmail.com"	
@@ -18,7 +13,6 @@
     "require": {
         "symfony/console": "*"
     },
-
     "autoload": {
         "psr-4": {"Elysium001\\MauticPluginCreator\\": "src/"}
     }
