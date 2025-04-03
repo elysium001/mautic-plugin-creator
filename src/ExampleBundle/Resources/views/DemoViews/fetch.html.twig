@@ -1,0 +1,119 @@
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% block headerTitle %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <table class="table mt-32" id="peopleTable">
+            <thead>
+                <tr>
+                    <th>Contact</th>
+                    <th>First Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in mautic_contacts %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.firstname }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p id="errorMessageText"></p>
+        </div>
+
+        {% include '@HelloWorld/DemoViews/partials/progress.html.twig' %}
+
+        <h2>Dog Table</h2>
+        <table class="table mt-32" id="dogTable">
+            <thead>
+                <tr>
+                    <th>Breed</th>
+                    <th>Sub Breed</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-xs-3 col-sm-3">
+                    <button type="button" class="btn btn-primary" id="getDogs">Get Dogs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function showErrorMessage(message) {
+        document.getElementById('errorMessageText').innerText = message;
+        document.getElementById('errorMessage').style.display = 'block';
+    }
+
+    document.getElementById('getDogs').addEventListener('click', function(e) {
+        
+        document.getElementById('progressContainer').style.display = 'block';
+
+        const nonce = mauticAjaxCsrf; // Get from global JS variable.
+        const ajaxUrl = '{{ path('plugin_example_sync_do_fetch') }}';
+
+        fetch(ajaxUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': nonce
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('looking good...', data);
+            const dogTableBody = document.querySelector('#dogTable tbody');
+            dogTableBody.innerHTML = ''; // Clear existing rows
+
+            // Check if data.dogs is an object
+            if (data.dogs && typeof data.dogs === 'object') {
+                Object.entries(data.dogs).forEach(([breed, subBreeds]) => {
+                    const row = document.createElement('tr');
+                    const breedCell = document.createElement('td');
+                    const subBreedCell = document.createElement('td');
+
+                    breedCell.innerText = breed || 'N/A'; // Use breed name as key
+
+                    // Join sub-breeds into a string, or use 'N/A' if the array is empty
+                    subBreedCell.innerText = subBreeds.length > 0 ? subBreeds.join(', ') : 'N/A';
+
+                    row.appendChild(breedCell);
+                    row.appendChild(subBreedCell);
+                    dogTableBody.appendChild(row);
+                });
+            } else {
+                // Handle the case where data.dogs is not an object
+                showErrorMessage('No dog data available or data format is incorrect.');
+            }
+        })
+        .catch(error => {
+            showErrorMessage(error.message);
+        })
+        .finally(() => {
+            document.getElementById('progressContainer').style.display = 'none';
+
+            console.log('success!');
+        });
+    });
+    </script>
+
+{% endblock %}

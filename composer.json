@@ -1,5 +1,5 @@
 {
-    "name": "aviboy2006/mautic-plugin-creator",
+    "name": "elysium001/mautic-plugin-creator",
     "description": "Basic Mautic custom plugin creator",
     "type": "library",
     "license": "MIT",
@@ -9,6 +9,10 @@
 	    {
 	    	"name": "aviboy2006",
 	    	"email": "avinashsdalvi@gmail.com"	
+	    },
+        {
+	    	"name": "elysium001",
+	    	"email": "a.omarserrano@gmail.com"	
 	    }
     ],
     "require": {
@@ -16,6 +20,6 @@
     },
 
     "autoload": {
-        "psr-4": {"Aviboy2006\\MauticPluginCreator\\": "src/"}
+        "psr-4": {"Elysium001\\MauticPluginCreator\\": "src/"}
     }
 }

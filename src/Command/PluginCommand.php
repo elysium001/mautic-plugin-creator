@@ -1,7 +1,7 @@
 <?php
 
 // src/Command/PluginCommand.php
-namespace Aviboy2006\MauticPluginCreator\Command;
+namespace Elysium001\MauticPluginCreator\Command;
 
 
 use Symfony\Component\Console\Command\Command;

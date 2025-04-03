@@ -1,3 +1,3 @@
-Aviboy2006\MauticPluginCreator\Command:
+Elysium001\MauticPluginCreator\Command:
         tags:
             - { name: 'console.command', command: 'customplugin:create' }
